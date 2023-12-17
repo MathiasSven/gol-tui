@@ -1,0 +1,37 @@
+cabal-version:      3.8
+name:               gol-tui
+version:            0.1.0.0
+synopsis:           Conway's Game of Life TUI
+homepage:           https://github.com/MathiasSven/gol-tui
+license:            MIT
+license-file:       LICENSE
+author:             Mathias Sven
+maintainer:         mathiassven2@hotmail.com
+category:           Game
+build-type:         Simple
+
+common warnings
+    ghc-options: -Wall
+
+executable gol-tui
+    import:           warnings
+    main-is:          Main.hs
+    other-modules:    Game
+
+    build-depends:    base ^>=4.17.2.0
+                    , text
+                    , brick
+                    , vty
+                    , mtl
+                    , microlens
+                    , microlens-mtl
+                    , microlens-th
+                    , inline-c
+                    , inline-c-cpp
+                    , raw-strings-qq
+                    , derive-storable
+                    , derive-storable-plugin
+
+    hs-source-dirs:   src
+    default-language: GHC2021
+    ghc-options: -threaded -optcxx-std=c++20
