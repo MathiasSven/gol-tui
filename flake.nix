@@ -3,11 +3,17 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    systems.url = "github:nix-systems/default";
   };
 
-  outputs = {self, nixpkgs, ...}: let
-
-    system = "x86_64-linux";
+  outputs = {self, nixpkgs, systems, ...}: let
+    forEachSystem = func:
+      builtins.foldl' 
+      nixpkgs.lib.recursiveUpdate { }
+      (map func (import systems));
+  in forEachSystem (system: 
+  
+  let
     pkgs = nixpkgs.legacyPackages.${system}.extend overlay;
     pkgsStatic = pkgs.pkgsStatic;
     
@@ -56,6 +62,6 @@
     };
 
     devShells.${system}.default = self.packages.${system}.gol-tui-shell;
-  };
+  });
 }
 
