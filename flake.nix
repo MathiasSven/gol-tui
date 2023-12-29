@@ -23,7 +23,7 @@
           gol-tui = 
             let pkg = self.callCabal2nix "gol-tui" src { };
             in pkgs.haskell.lib.overrideCabal pkg (old: { 
-              executableSystemDepends = with pkgs; [ numcpp boost.dev ];
+              executableSystemDepends = with pkgs; [ cmake numcpp boost.dev ];
             });
         };
       };
@@ -31,8 +31,16 @@
     
     inherit (pkgs) lib;
 
-    regexes =
-          [ ".*.cabal$" "^src.*" "LICENSE" ];
+    regexes = [ 
+      "^src.*"
+      "^cmake.*"
+      ".*.cabal$"
+      "configure"
+      ".*.in"
+      "LICENSE" 
+      "Setup.hs"
+    ];
+
     src = builtins.path {
       path = ./.;
       name = "gol-tui-src";
@@ -51,8 +59,6 @@
         name = "gol-tui";
 
         buildInputs = oldAttrs.buildInputs ++ (with pkgs; [
-          numcpp
-          boost.dev
           cabal-install
           haskell-language-server
           hlint

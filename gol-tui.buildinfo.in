@@ -1,0 +1,4 @@
+executable: gol-tui
+include-dirs: @NumCpp_INCLUDE_DIR@
+              @Boost_INCLUDE_DIR@
+

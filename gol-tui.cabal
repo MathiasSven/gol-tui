@@ -8,7 +8,8 @@ license-file:       LICENSE
 author:             Mathias Sven
 maintainer:         mathiassven2@hotmail.com
 category:           Game
-build-type:         Simple
+build-type:         Configure
+extra-tmp-files:    "./gol-tui.buildinfo"
 
 common warnings
     ghc-options: -Wall

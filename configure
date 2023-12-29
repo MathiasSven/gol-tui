@@ -1,0 +1,1 @@
+cmake "${gol_tui_datadir:-"$src"}/cmake"
