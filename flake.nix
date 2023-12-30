@@ -4,9 +4,10 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     systems.url = "github:nix-systems/default";
+    bundlers.url = "github:NixOS/bundlers";
   };
 
-  outputs = {self, nixpkgs, systems, ...}: let
+  outputs = {self, nixpkgs, systems, bundlers, ...}: let
     forEachSystem = func:
       builtins.foldl' 
       nixpkgs.lib.recursiveUpdate { }
@@ -16,6 +17,8 @@
   let
     pkgs = nixpkgs.legacyPackages.${system}.extend overlay;
     pkgsStatic = pkgs.pkgsStatic;
+
+    inherit (bundlers.bundlers.${system}) toRPM toDEB;
     
     overlay = self: super: {
       haskell = super.haskell // {
@@ -53,7 +56,10 @@
     packages.${system} = rec { 
       default = gol-tui;
       gol-tui = pkgs.haskellPackages.gol-tui;
+
       gol-tui-static = pkgsStatic.haskellPackages.gol-tui;
+      gol-tui-rpm = toRPM gol-tui;
+      gol-tui-deb = toDEB gol-tui;
       
       gol-tui-shell = default.env.overrideAttrs (oldAttrs: {
         name = "gol-tui";
